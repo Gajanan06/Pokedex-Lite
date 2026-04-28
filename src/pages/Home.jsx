@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPokemonList } from "../services/pokemon";
+import PokemonModal from "../components/PokemonModal";
 
 function Home() {
   const [pokemon, setPokemon] = useState([]);
@@ -10,6 +11,8 @@ function Home() {
   const limit = 20;
 
   const [favorites, setFavorites] = useState([]);
+
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   useEffect(() => {
     fetchPokemon();
@@ -65,9 +68,10 @@ const toggleFavorite = (name) => {
           return (
            <div
   key={poke.name}
+  onClick={() => setSelectedPokemon(poke)}
   className="relative bg-white p-3 rounded shadow text-center"
 >
-  {/* ❤️ Button */}
+
   <button
     onClick={(e) => {
       e.stopPropagation();
@@ -107,6 +111,14 @@ const toggleFavorite = (name) => {
       {filteredPokemon.length === 0 && (
         <p className="mt-4">No Pokémon found</p>
       )}
+
+      {selectedPokemon && (
+  <PokemonModal
+    pokemon={selectedPokemon}
+    onClose={() => setSelectedPokemon(null)}
+  />
+)}
+
     </div>
   );
 }

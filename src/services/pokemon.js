@@ -5,3 +5,9 @@ export const getPokemonList = async (limit = 20, offset=0) => {
   const data = await res.json();
   return data.results;
 };
+
+export const getPokemonDetails = async (url) => {
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+};
