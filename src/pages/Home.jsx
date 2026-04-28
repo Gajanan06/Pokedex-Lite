@@ -6,12 +6,15 @@ function Home() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [offset, setOffset] = useState(0);
+  const limit = 20;
+
   useEffect(() => {
     fetchPokemon();
-  }, []);
+  }, [offset]);
 
   const fetchPokemon = async () => {
-    const data = await getPokemonList();
+    const data = await getPokemonList(limit, offset);
     setPokemon(data);
   };
 
@@ -49,6 +52,26 @@ function Home() {
           );
         })}
       </div>
+
+      <div className="flex justify-center gap-4 mt-6">
+        <p className="text-center mt-4">
+  Page: {offset / limit + 1}
+</p>
+  <button
+    onClick={() => setOffset((prev) => Math.max(prev - limit, 0))}
+    disabled={offset === 0}
+    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  <button
+    onClick={() => setOffset((prev) => prev + limit)}
+    className="px-4 py-2 bg-gray-300 rounded"
+  >
+    Next
+  </button>
+</div>
 
       {filteredPokemon.length === 0 && (
         <p className="mt-4">No Pokémon found</p>
