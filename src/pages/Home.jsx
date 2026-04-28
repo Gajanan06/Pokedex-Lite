@@ -9,6 +9,8 @@ function Home() {
   const [offset, setOffset] = useState(0);
   const limit = 20;
 
+  const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     fetchPokemon();
   }, [offset]);
@@ -21,6 +23,23 @@ function Home() {
   const filteredPokemon = pokemon.filter((poke) =>
   poke.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+  const saved = JSON.parse(localStorage.getItem("favorites")) || [];
+  setFavorites(saved);
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}, [favorites]);
+
+const toggleFavorite = (name) => {
+  if (favorites.includes(name)) {
+    setFavorites(favorites.filter((fav) => fav !== name));
+  } else {
+    setFavorites([...favorites, name]);
+  }
+};
 
   return (
     <div className="p-4">
@@ -41,14 +60,26 @@ function Home() {
           const id = poke.url.split("/")[6];
           const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
+          const isFav = favorites.includes(poke.name);
+
           return (
-            <div
-              key={poke.name}
-              className="bg-white p-3 rounded shadow text-center"
-            >
-              <img src={image} alt={poke.name} className="mx-auto" />
-              <p className="capitalize">{poke.name}</p>
-            </div>
+           <div
+  key={poke.name}
+  className="relative bg-white p-3 rounded shadow text-center"
+>
+  {/* ❤️ Button */}
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      toggleFavorite(poke.name);
+    }}
+    className="absolute top-2 right-2 text-xl"
+  >
+    {isFav ? "❤️" : "🤍"}
+  </button>
+  <img src={image} alt={poke.name} className="mx-auto" />
+  <p className="capitalize">{poke.name}</p>
+</div>
           );
         })}
       </div>
