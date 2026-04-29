@@ -6,6 +6,7 @@ import {
 } from "../services/pokemon";
 import PokemonModal from "../components/PokemonModal";
 import Header from "../components/Header";
+import { useRef } from "react";
 
 function Home() {
 
@@ -15,11 +16,15 @@ function Home() {
   const [offset, setOffset] = useState(0);
   const limit = 20;
 
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+  return JSON.parse(localStorage.getItem("favorites")) || [];
+});
   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState("");
+
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     if (selectedType) {
@@ -56,27 +61,45 @@ function Home() {
   };
 
 
-  const filteredPokemon = pokemon.filter((poke) =>
-    poke.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+ const filteredPokemon = (pokemon || []).filter((poke) => {
+  const name = poke?.name || poke?.pokemon?.name || "";
+  return name.toLowerCase().includes(searchTerm.toLowerCase());
+});
 
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("favorites")) || [];
+    // console.log("Loaded favorites:", saved);
     setFavorites(saved);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+  if (isFirstLoad.current) {
+    isFirstLoad.current = false;
+    return;
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}, [favorites]);
 
   const toggleFavorite = (name) => {
-    if (favorites.includes(name)) {
-      setFavorites(favorites.filter((fav) => fav !== name));
+  const normalized = name.toLowerCase();
+
+  setFavorites((prev) => {
+    let updated;
+
+    if (prev.includes(normalized)) {
+      updated = prev.filter((fav) => fav !== normalized);
     } else {
-      setFavorites([...favorites, name]);
+      updated = [...prev, normalized];
     }
-  };
+
+    // ✅ Save immediately (no useEffect needed)
+    localStorage.setItem("favorites", JSON.stringify(updated));
+
+    return updated;
+  });
+};
 
   useEffect(() => {
     fetchTypes();
@@ -91,7 +114,7 @@ function Home() {
   return (
     <>
     <Header />
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 p-6 bg-gray-500">
   
       <div className="flex justify-center mb-4">
         <input
@@ -120,13 +143,17 @@ function Home() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
         {filteredPokemon.map((poke) => {
-          const id = poke.url.split("/")[6];
+          const url = poke.url || poke?.pokemon?.url;
+          const name = poke.name || poke?.pokemon?.name;
+          const id = url?.split("/")[6];
           const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-          const isFav = favorites.includes(poke.name);
+          const normalizedName = name.toLowerCase();
+          const isFav = favorites.includes(normalizedName);
+          
 
           return (
             <div
-              key={poke.name}
+              key={name}
               onClick={() => setSelectedPokemon(poke)}
               className="relative bg-white p-4 rounded-xl shadow hover:shadow-lg transition cursor-pointer text-center"
             >
@@ -134,7 +161,7 @@ function Home() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleFavorite(poke.name);
+                  toggleFavorite(name);
                 }}
                 className="absolute top-2 right-2 text-xl"
               >
@@ -142,13 +169,13 @@ function Home() {
               </button>
 
               <img
-                src={image}
-                alt={poke.name}
-                className="mx-auto w-20 h-20"
-              />
+  src={image}
+  alt={name}
+  className="mx-auto w-20 h-20 transition-transform duration-300 hover:scale-110"
+/>
 
               <p className="capitalize mt-2 font-medium">
-                {poke.name}
+                {name}
               </p>
             </div>
           );
@@ -185,6 +212,7 @@ function Home() {
           No Pokémon found
         </p>
       )}
+
 
       {selectedPokemon && (
         <PokemonModal

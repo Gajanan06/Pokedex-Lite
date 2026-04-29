@@ -19,7 +19,7 @@ function PokemonModal({ pokemon, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="bg-white text-black p-6 rounded-lg w-80 relative">
+      <div className="bg-white text-black p-6 rounded-lg w-80 relative animate-fadeIn">
 
         <button
           onClick={onClose}
