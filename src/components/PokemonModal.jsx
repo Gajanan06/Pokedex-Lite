@@ -21,7 +21,6 @@ function PokemonModal({ pokemon, onClose }) {
     <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
       <div className="bg-white text-black p-6 rounded-lg w-80 relative">
 
-        {/* Close */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-xl"
@@ -43,7 +42,6 @@ function PokemonModal({ pokemon, onClose }) {
               className="mx-auto"
             />
 
-            {/* Stats */}
             <div className="mt-4">
               <h3 className="font-semibold">Stats:</h3>
               {details.stats.map((stat) => (
@@ -53,7 +51,6 @@ function PokemonModal({ pokemon, onClose }) {
               ))}
             </div>
 
-            {/* Abilities */}
             <div className="mt-4">
               <h3 className="font-semibold">Abilities:</h3>
               {details.abilities.map((ab) => (

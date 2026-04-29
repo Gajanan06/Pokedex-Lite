@@ -11,3 +11,15 @@ export const getPokemonDetails = async (url) => {
   const data = await res.json();
   return data;
 };
+
+export const getPokemonTypes = async () => {
+  const res = await fetch("https://pokeapi.co/api/v2/type");
+  const data = await res.json();
+  return data.results;
+};
+
+export const getPokemonByType = async (type) => {
+  const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+  const data = await res.json();
+  return data.pokemon;
+};
