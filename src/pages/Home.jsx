@@ -54,7 +54,6 @@ const toggleFavorite = (name) => {
 
   const fetchTypes = async () => {
     const data = await getPokemonTypes();
-    // console.log("Fetched Types:", data);
     setTypes(data);
   };
 
@@ -84,14 +83,15 @@ const toggleFavorite = (name) => {
     setOffset(0);
   }, [selectedType]);
 
-  
+
 
   return (
     <>
     <Header />
     <div className="min-h-screen bg-gray-500 p-6">
   
-      <div className="flex justify-center mb-4">
+      <div className="flex gap-4 justify-center align-items-center mb-6">
+      <div className="flex justify-center w-70 h-11">
         <input
           type="text"
           placeholder="Search Pokémon..."
@@ -101,11 +101,12 @@ const toggleFavorite = (name) => {
         />
       </div>
 
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center align-items-center h-11">
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
+          // className="px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
+          className="w-full max-w-sm px-5 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
         >
           <option value="">All Types</option>
           {types.map((type) => (
@@ -114,6 +115,7 @@ const toggleFavorite = (name) => {
             </option>
           ))}
         </select>
+      </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
@@ -128,7 +130,7 @@ const toggleFavorite = (name) => {
             <div
               key={name}
               onClick={() => setSelectedPokemon(poke)}
-              className="relative bg-white p-4 rounded-xl shadow hover:shadow-lg transition cursor-pointer text-center"
+              className="relative bg-white p-4 rounded-xl shadow text-center cursor-pointer transform transition duration-300 ease-in-out hover:scale-105"
             >
 
               <button
@@ -141,7 +143,7 @@ const toggleFavorite = (name) => {
                 {isFav ? "❤️" : "🤍"}
               </button>
 
-              <img src={image} alt={name} className="mx-auto w-20 h-20 transition-transform duration-300 hover:scale-110"
+              <img src={image} alt={name} className="mx-auto w-30 h-30 transition-transform duration-300 hover:scale-110"
               />
  
               <p className="capitalize mt-2 font-medium">
