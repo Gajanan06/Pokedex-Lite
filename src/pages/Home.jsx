@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  getPokemonList,
-  getPokemonByType,
-  getPokemonTypes,
-} from "../services/pokemon";
+import {getPokemonList, getPokemonByType, getPokemonTypes,} from "../services/pokemon";
 import PokemonModal from "../components/PokemonModal";
 import Header from "../components/Header";
-import { useRef } from "react";
 
 function Home() {
 
@@ -17,14 +12,14 @@ function Home() {
   const limit = 20;
 
   const [favorites, setFavorites] = useState(() => {
-  return JSON.parse(localStorage.getItem("favorites")) || [];
-});
+    const saved = localStorage.getItem("favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState("");
-
-  const isFirstLoad = useRef(true);
 
 
 
@@ -33,47 +28,27 @@ function Home() {
     setPokemon(data);
   };
 
- 
+    useEffect(() => {
+    fetchTypes();
+  }, []);
 
 
- const filteredPokemon = (pokemon || []).filter((poke) => {
-  const name = poke?.name || poke?.pokemon?.name || "";
-  return name.toLowerCase().includes(searchTerm.toLowerCase());
+ const filteredPokemon = pokemon.filter((poke) => {
+  return poke.name.toLowerCase().includes(searchTerm.toLowerCase());
 });
 
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("favorites")) || [];
-    // console.log("Loaded favorites:", saved);
-    setFavorites(saved);
-  }, []);
-
-  useEffect(() => {
-  if (isFirstLoad.current) {
-    isFirstLoad.current = false;
-    return;
-  }
-
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }, [favorites]);
 
-  const toggleFavorite = (name) => {
-  const normalized = name.toLowerCase();
 
-  setFavorites((prev) => {
-    let updated;
-
-    if (prev.includes(normalized)) {
-      updated = prev.filter((fav) => fav !== normalized);
-    } else {
-      updated = [...prev, normalized];
-    }
-
-    // ✅ Save immediately (no useEffect needed)
-    localStorage.setItem("favorites", JSON.stringify(updated));
-
-    return updated;
-  });
+const toggleFavorite = (name) => {
+  if (favorites.includes(name)) {
+    setFavorites(favorites.filter((fav) => fav !== name));
+  } else {
+    setFavorites([...favorites, name]);
+  }
 };
 
 
@@ -83,9 +58,7 @@ function Home() {
     setTypes(data);
   };
 
-  useEffect(() => {
-    fetchTypes();
-  }, []);
+
 
     useEffect(() => {
     if (selectedType) {
@@ -97,9 +70,9 @@ function Home() {
 
    const fetchByType = async () => {
     try {
-      const res = await getPokemonByType(selectedType);
+      const data = await getPokemonByType(selectedType);
 
-      const results = res.pokemon.map((item) => item.pokemon);
+      const results = data.pokemon.map((item) => item.pokemon);
 
       setPokemon(results.slice(offset, offset + limit));
     } catch (error) {
@@ -111,10 +84,12 @@ function Home() {
     setOffset(0);
   }, [selectedType]);
 
+  
+
   return (
     <>
     <Header />
-    <div className="min-h-screen bg-gray-500 via-gray-200 to-gray-300 p-6">
+    <div className="min-h-screen bg-gray-500 p-6">
   
       <div className="flex justify-center mb-4">
         <input
@@ -143,13 +118,11 @@ function Home() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
         {filteredPokemon.map((poke) => {
-          const url = poke.url || poke?.pokemon?.url;
-          const name = poke.name || poke?.pokemon?.name;
+          const url = poke.url;
+          const name = poke.name;
           const id = url?.split("/")[6];
           const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-          const normalizedName = name.toLowerCase();
-          const isFav = favorites.includes(normalizedName);
-          
+          const isFav = favorites.includes(name);
 
           return (
             <div
@@ -168,12 +141,9 @@ function Home() {
                 {isFav ? "❤️" : "🤍"}
               </button>
 
-              <img
-  src={image}
-  alt={name}
-  className="mx-auto w-20 h-20 transition-transform duration-300 hover:scale-110"
-/>
-
+              <img src={image} alt={name} className="mx-auto w-20 h-20 transition-transform duration-300 hover:scale-110"
+              />
+ 
               <p className="capitalize mt-2 font-medium">
                 {name}
               </p>
