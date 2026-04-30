@@ -1,16 +1,144 @@
-# React + Vite
+# Pokedex Lite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean and responsive Pokémon catalog app built with React.  
+Browse Pokémon, search by name, filter by type, and save your favorites.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
 
-## React Compiler
+Link -  (deployment in progress)  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- Search Pokémon by name  
+- Filter Pokémon by type (Fire, Water, Grass, etc.)  
+- Add / Remove favorites  
+- Favorites saved in LocalStorage (persist after refresh)  
+- Pagination for browsing  
+- Click to view Pokémon details in a modal  
+- Responsive UI  
+
+---
+
+## Tech Stack
+
+- **React** – for building UI (functional components & hooks)  
+- **Tailwind CSS** – for styling and responsive design  
+- **PokéAPI** – for Pokémon data  
+- **LocalStorage** – to persist favorites  
+
+---
+
+## Getting Started
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/Gajanan06/Pokedex-Lite
+cd Pokedex-Lite
+```
+
+### 2️⃣ Install dependencies
+```bash
+npm install
+```
+
+### 3️⃣ Run the app
+```bash
+npm run dev
+```
+
+Open in browser:
+```
+http://localhost:5173
+```
+
+---
+
+## Build (Production)
+
+```bash
+npm run build
+```
+
+Preview build:
+```bash
+npm run preview
+```
+
+---
+
+## How Core Features Work
+
+### 🔹 Type Filtering
+- User selects a type from dropdown  
+- API call: `/type/{type}`  
+- Extract Pokémon list  
+- Update state → UI re-renders with filtered results  
+
+---
+
+### 🔹 Favorites (Local Storage)
+- Click ❤️ to toggle favorite  
+- Stored in LocalStorage  
+- Automatically loaded on refresh  
+
+---
+
+### 🔹 Search
+- Filters Pokémon based on name  
+- Works together with type filtering  
+
+---
+
+## Challenges Faced (Simple Explanation)
+
+### 1. Different API Response Formats
+- List API and Type API returned data in different structures  
+- Solution: Extracted and normalized data into a common format  
+
+---
+
+### 2. Favorites Not Persisting
+- Favorites were getting reset after refresh  
+- Solution: Used LocalStorage with proper state handling  
+
+---
+
+### 3. Filtering Not Working Properly
+- Wrong data extraction caused empty results  
+- Solution: Correctly mapped API response and updated state  
+
+---
+
+### 4. Pagination with Filtering
+- Pagination caused empty data when switching types  
+- Solution: Reset offset when type changes  
+
+---
+
+## Future Improvements
+
+- Multi-type filtering (e.g., Fire + Flying)  
+- Favorites-only filter  
+- Sorting (A–Z, by ID)  
+- Loading skeleton UI  
+- Better error handling  
+
+---
+
+##  Author
+
+**Gajanan Nilajkar**
+
+---
+
+## Acknowledgements
+
+- PokéAPI for free Pokémon data  
+- React & Tailwind community  
+
+---

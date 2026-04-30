@@ -107,14 +107,14 @@ function Home() {
 
   const fetchTypes = async () => {
     const data = await getPokemonTypes();
-    console.log("Fetched Types:", data);
+    // console.log("Fetched Types:", data);
     setTypes(data);
   };
 
   return (
     <>
     <Header />
-    <div className="min-h-screen bg-gray-100 p-6 bg-gray-500">
+    <div className="min-h-screen bg-gray-500 via-gray-200 to-gray-300 p-6">
   
       <div className="flex justify-center mb-4">
         <input
@@ -122,7 +122,7 @@ function Home() {
           placeholder="Search Pokémon..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full max-w-md px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+           className="w-full max-w-md px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
         />
       </div>
 
@@ -130,7 +130,7 @@ function Home() {
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="px-4 py-2 border rounded-lg shadow-sm"
+          className="px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
         >
           <option value="">All Types</option>
           {types.map((type) => (

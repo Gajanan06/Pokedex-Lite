@@ -1,9 +1,11 @@
 function Header() {
   return (
     <>
-      <h1 className="flex text-3xl justify-center text-center pt-4 font-bold bg-gray-300 text-center h-18 ">
-        Pokédex Lite 
-      </h1>
+      <div className="w-full bg-white border-b shadow-sm py-5 flex justify-center items-center">
+  <h1 className="text-3xl font-bold text-gray-900">
+    Pokédex Lite
+  </h1>
+</div>
     </>
   );
 }
