@@ -105,7 +105,6 @@ const toggleFavorite = (name) => {
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          // className="px-5 py-3 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
           className="w-full max-w-sm px-5 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
         >
           <option value="">All Types</option>
