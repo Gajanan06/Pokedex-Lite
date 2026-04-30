@@ -7,7 +7,7 @@ Browse Pokémon, search by name, filter by type, and save your favorites.
 
 ## Live Demo
 
-Link -  (deployment in progress)  
+ https://pokedex-lite-gajanan.vercel.app/
 
 
 ---
@@ -133,12 +133,5 @@ npm run preview
 ##  Author
 
 **Gajanan Nilajkar**
-
----
-
-## Acknowledgements
-
-- PokéAPI for free Pokémon data  
-- React & Tailwind community  
 
 ---

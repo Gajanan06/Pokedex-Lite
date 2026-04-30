@@ -21,5 +21,5 @@ export const getPokemonTypes = async () => {
 export const getPokemonByType = async (type) => {
   const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
   const data = await res.json();
-  return data.pokemon;
+  return data;
 };

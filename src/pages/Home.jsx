@@ -26,39 +26,14 @@ function Home() {
 
   const isFirstLoad = useRef(true);
 
-  useEffect(() => {
-    if (selectedType) {
-      fetchByType();
-    } else {
-      fetchPokemon();
-    }
-  }, [offset, selectedType]);
 
-  useEffect(() => {
-    setOffset(0);
-  }, [selectedType]);
 
   const fetchPokemon = async () => {
     const data = await getPokemonList(limit, offset);
     setPokemon(data);
   };
 
-  const fetchByType = async () => {
-    try {
-      const data = await getPokemonByType(selectedType);
-
-      if (!data || !data.pokemon) {
-        setPokemon([]);
-        return;
-      }
-
-      const results = data.pokemon.map((item) => item.pokemon);
-
-      setPokemon(results.slice(offset, offset + limit));
-    } catch (error) {
-      setPokemon([]);
-    }
-  };
+ 
 
 
  const filteredPokemon = (pokemon || []).filter((poke) => {
@@ -101,15 +76,40 @@ function Home() {
   });
 };
 
-  useEffect(() => {
-    fetchTypes();
-  }, []);
 
   const fetchTypes = async () => {
     const data = await getPokemonTypes();
     // console.log("Fetched Types:", data);
     setTypes(data);
   };
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
+
+    useEffect(() => {
+    if (selectedType) {
+      fetchByType();
+    } else {
+      fetchPokemon();
+    }
+  }, [offset, selectedType]);
+
+   const fetchByType = async () => {
+    try {
+      const res = await getPokemonByType(selectedType);
+
+      const results = res.pokemon.map((item) => item.pokemon);
+
+      setPokemon(results.slice(offset, offset + limit));
+    } catch (error) {
+      setPokemon([]);
+    }
+  };
+
+    useEffect(() => {
+    setOffset(0);
+  }, [selectedType]);
 
   return (
     <>
